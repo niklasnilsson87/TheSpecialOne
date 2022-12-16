@@ -10,9 +10,9 @@ router.post('/', auth, async (req, res) => {
   const { _id } = req.body
   try {
     const players = await Player.find({ owner: _id }).exec()
-    await res.json(players)
+    res.json(players)
   } catch (error) {
-    await res.status(400).json({ msg: 'Could not find any players' })
+    res.status(400).json({ msg: 'Could not find any players' })
   }
 })
 
@@ -30,9 +30,9 @@ router.post('/update', auth, async (req, res) => {
     await User.updateOne({ _id: user._id }, {
       $set: { totalPoints: updatePoints }
     })
-    await res.json(updatePoints)
+    res.json(updatePoints)
   } catch (error) {
-    await res.status(400).json({ msg: 'Could not update player..' })
+    res.status(400).json({ msg: 'Could not update player..' })
   }
 })
 

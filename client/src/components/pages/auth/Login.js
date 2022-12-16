@@ -28,54 +28,75 @@ class Login extends Component {
 
   componentDidUpdate(prevProps) {
     const { error } = this.props
-    if(error !== prevProps.error) {
+    if (error !== prevProps.error) {
       // Check for register error
-      if (error.id === 'LOGIN_FAIL'){
-        this.setState({ msg: error.msg.msg})
+      if (error.id === 'LOGIN_FAIL') {
+        this.setState({ msg: error.msg.msg })
       } else {
         this.setState({ msg: null })
       }
     }
   }
 
-  onChange = e => {
+  onChange = (e) => {
     this.setState({
       [e.target.name]: e.target.value
     })
   }
 
-  onSubmit = e => {
+  onSubmit = (e) => {
     e.preventDefault()
 
-   const { email, password } = this.state
+    const { email, password } = this.state
 
-   const user = {
-     email,
-     password
-   }
-   this.props.login(user)
+    const user = {
+      email,
+      password
+    }
+    console.log(user)
+    this.props.login(user)
   }
 
-  render () {
+  render() {
     return (
       <Container>
         <div className="form-div">
           <h2 className="pb-2 text-dark mb-2">Login</h2>
-          { this.state.msg ? (<Alert className='alert bg-danger text-white'>{this.state.msg}</Alert>) : null}
-          <Form expand='sm' onSubmit={this.onSubmit}>
-              <div className="d-flex justify-content-between">
-            <FormGroup className="mr-2">
-              <Label for='exampleEmail'>Email</Label>
-                <Input type='email' name='email' className='login-form' onChange={this.onChange} placeholder='Username...' />
-            </FormGroup>
-            <FormGroup>
-              <Label for='examplePassword'>Password</Label>
-                <Input type='password' name='password' className='mb-1' onChange={this.onChange} placeholder='Password...' />
-            </FormGroup>
-              </div>
-            <button type='submit' name='login' className='larger-btn btn-color'>Login</button>
+          {this.state.msg ? (
+            <Alert className="alert bg-danger text-white">
+              {this.state.msg}
+            </Alert>
+          ) : null}
+          <Form expand="sm" onSubmit={this.onSubmit}>
+            <div className="d-flex justify-content-between">
+              <FormGroup className="mr-2">
+                <Label for="exampleEmail">Email</Label>
+                <Input
+                  type="email"
+                  name="email"
+                  className="login-form"
+                  onChange={this.onChange}
+                  placeholder="Username..."
+                />
+              </FormGroup>
+              <FormGroup>
+                <Label for="examplePassword">Password</Label>
+                <Input
+                  type="password"
+                  name="password"
+                  className="mb-1"
+                  onChange={this.onChange}
+                  placeholder="Password..."
+                />
+              </FormGroup>
+            </div>
+            <button type="submit" name="login" className="larger-btn btn-color">
+              Login
+            </button>
           </Form>
-          <NavLink className="text-dark" to="/register">Not registered?</NavLink>
+          <NavLink className="text-dark" to="/register">
+            Not registered?
+          </NavLink>
         </div>
       </Container>
     )
@@ -83,7 +104,7 @@ class Login extends Component {
 }
 
 // Function to get states for global store.
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   isAuthenticated: state.auth.isAuthenticated,
   error: state.error
 })

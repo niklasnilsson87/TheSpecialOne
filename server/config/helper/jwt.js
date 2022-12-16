@@ -7,27 +7,23 @@ const bcrypt = require('bcryptjs')
  *
  * @param {String} user User Id
  */
-const sign = user => {
-  return new Promise((resolve, reject) => {
+const sign = (user) =>
+  new Promise((resolve, reject) =>
     jwt.sign(
       { id: user.id },
       process.env.JWT_SECRET,
       { expiresIn: 3600 },
-      (error, token) => {
-        if (error) return reject(error)
-        return resolve(token)
-      }
+      (error, token) => (error ? reject(error) : resolve(token))
     )
-  })
-}
+  )
 
 /**
  * Salts and hash the password
  *
  * @param {String} user User Id
  */
-const saltAndHash = user => {
-  return new Promise((resolve, reject) => {
+const saltAndHash = (user) =>
+  new Promise((resolve, reject) =>
     bcrypt.genSalt(10, (err, salt) => {
       if (err) return reject(err)
       bcrypt.hash(user.password, salt, (err, hash) => {
@@ -36,11 +32,10 @@ const saltAndHash = user => {
         return resolve(user)
       })
     })
-  })
-}
+  )
 
 // Exports
 module.exports = {
   sign,
-  saltAndHash
+  saltAndHash,
 }
