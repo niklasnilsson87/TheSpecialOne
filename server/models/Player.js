@@ -11,12 +11,14 @@ const playerSchema = new mongoose.Schema({
   age: { type: Number },
   country: { type: String },
   birthday: { type: String },
+  face: { type: Object },
   attributes: {
     tecnical: {
       dribbling: Number,
       finishing: Number,
       heading: Number,
       marking: Number,
+      tackling: Number,
       passing: Number,
       crossing: Number
     },

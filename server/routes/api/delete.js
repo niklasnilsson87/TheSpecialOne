@@ -10,9 +10,9 @@ router.post('/', auth, async (req, res) => {
   try {
     await User.findByIdAndRemove({ _id: req.body.id })
     await Player.deleteMany({ owner: req.body.id })
-    await res.json({ Success: true })
+    res.json({ Success: true })
   } catch (error) {
-    await res.json({ err: error })
+    res.json({ err: error })
   }
 })
 

@@ -8,17 +8,18 @@ const Comment = require('../../models/Comment')
 router.post('/', auth, async (req, res) => {
   const { sendTo, userid, teamName, comment, user } = req.body
 
-  if (!comment) return res.status(400).json({ msg: 'Did you forget to write something?' })
+  if (!comment)
+    return res.status(400).json({ msg: 'Did you forget to write something?' })
 
   const newComment = new Comment({
     user,
     userid,
     sendTo,
     comment,
-    teamName
+    teamName,
   })
   await newComment.save()
-  await res.json(newComment)
+  res.json(newComment)
 })
 
 // @route   POST api/comment/getComment
@@ -27,11 +28,10 @@ router.post('/', auth, async (req, res) => {
 router.post('/getComment', auth, async (req, res) => {
   const { id } = req.body
   try {
-    const comment = await Comment.find({ sendTo: id })
-      .sort({ date: -1 })
-    await res.json(comment)
+    const comment = await Comment.find({ sendTo: id }).sort({ date: -1 })
+    res.json(comment)
   } catch (error) {
-    await res.json({ msg: 'No comments with this user ID' })
+    res.json({ msg: 'No comments with this user ID' })
   }
 })
 

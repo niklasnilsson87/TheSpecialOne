@@ -25,7 +25,7 @@ router.post('/', auth, async (req, res) => {
 router.get('/', async (req, res) => {
   try {
     const allUsers = await User.find({}).select('-password')
-    await res.json(allUsers)
+    res.json(allUsers)
   } catch (err) {
     res.status(500).json({ msg: 'Could not find any users' })
   }
@@ -37,8 +37,12 @@ router.get('/', async (req, res) => {
 router.post('/points', auth, async (req, res) => {
   const { homeTeam, awayTeam, lastGame, point, decider } = req.body
   try {
-    const homeTeamUpdate = await User.findById({ _id: homeTeam._id }).select('-password')
-    const awayTeamUpdate = await User.findById({ _id: awayTeam._id }).select('-password')
+    const homeTeamUpdate = await User.findById({ _id: homeTeam._id }).select(
+      '-password'
+    )
+    const awayTeamUpdate = await User.findById({ _id: awayTeam._id }).select(
+      '-password'
+    )
     if (decider === 'win') {
       homeTeamUpdate.totalPoints = homeTeamUpdate.totalPoints + point
       homeTeamUpdate.lastPlayed = lastGame
@@ -53,7 +57,7 @@ router.post('/points', auth, async (req, res) => {
 
     await awayTeamUpdate.save()
     await homeTeamUpdate.save()
-    await res.json(homeTeamUpdate)
+    res.json(homeTeamUpdate)
   } catch (error) {
     res.json({ msg: 'Could not update points' })
   }

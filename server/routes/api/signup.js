@@ -8,50 +8,51 @@ const User = require('../../models/User')
 // @route   POST api/signup
 // @desc    Register new user
 // @access  Public
-router.post('/', (res, req) => {
-  const { name, email, password, teamName } = req.req.body
+router.post('/', async (req, res) => {
+  console.log(req.body)
+  const { name, email, password, teamName } = req.body
 
   // validation
   if (!name || !email || !password || !teamName) {
-    return res.res.status(400).json({ msg: 'Please enter all fields' })
+    return res.status(400).json({ msg: 'Please enter all fields' })
   }
 
-  User.findOne({ email })
-    .then(user => {
-      if (user) return res.res.status(400).json({ msg: 'User already exist' })
+  const user = await User.findOne({ email })
 
-      // Creates new user
-      const newUser = new User({
-        name,
-        email,
-        password,
-        teamName
-      })
+  if (user) return res.status(400).json({ msg: 'User already exist' })
 
-      saltAndHash(newUser)
-        .then(() => {
-          newUser.save()
-        })
-      for (let i = 0; i <= 15; i++) {
-        generatePlayer(newUser.id, newUser.teamName)
-      }
-      sign(newUser)
-        .then(token => {
-          res.res.json({
-            token,
-            user: {
-              _id: newUser.id,
-              name: newUser.name,
-              email: newUser.email,
-              teamName: newUser.teamName,
-              description: newUser.description,
-              favTeam: newUser.favTeam,
-              favPlayer: newUser.favPlayer,
-              totalPoints: newUser.totalPoints,
-              lastPlayed: newUser.lastPlayed
-            } })
-        })
-    })
+  // Creates new user
+  const newUser = new User({
+    name,
+    email,
+    password,
+    teamName
+  })
+
+  await saltAndHash(newUser)
+  newUser.save()
+
+  const token = await sign(newUser)
+
+  // Generate 15 players to the new user
+  for (let i = 0; i <= 15; i++) {
+    generatePlayer(newUser.id, newUser.teamName)
+  }
+
+  res.json({
+    token,
+    user: {
+      _id: newUser.id,
+      name: newUser.name,
+      email: newUser.email,
+      teamName: newUser.teamName,
+      description: newUser.description,
+      favTeam: newUser.favTeam,
+      favPlayer: newUser.favPlayer,
+      totalPoints: newUser.totalPoints,
+      lastPlayed: newUser.lastPlayed
+    }
+  })
 })
 
 // Exports

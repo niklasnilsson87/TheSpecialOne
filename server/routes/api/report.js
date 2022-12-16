@@ -8,9 +8,9 @@ const Report = require('../../models/Report')
 router.get('/', async (req, res) => {
   try {
     const reports = await Report.find({})
-    await res.json(reports)
+    res.json(reports)
   } catch (error) {
-    await res.json({ msg: 'something went wrong', err: error })
+    res.json({ msg: 'something went wrong', err: error })
   }
 })
 
@@ -28,9 +28,9 @@ router.post('/', auth, async (req, res) => {
     })
 
     await newReport.save()
-    await res.json(newReport)
+    res.json(newReport)
   } catch (error) {
-    await res.json({ msg: 'something went wrong', err: error })
+    res.json({ msg: 'something went wrong', err: error })
   }
 })
 
