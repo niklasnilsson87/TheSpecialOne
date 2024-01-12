@@ -6,7 +6,7 @@ const initialState = {
   loading: false
 }
 
-export default function (state = initialState, action) {
+export default function playerReducer(state = initialState, action) {
   switch (action.type) {
     case GET_PLAYER:
       return {

@@ -6,7 +6,7 @@ const initialState = {
   loading: false
 }
 
-export default function (state = initialState, action) {
+export default function reportReducer(state = initialState, action) {
   switch (action.type) {
     case GET_REPORT:
       return {

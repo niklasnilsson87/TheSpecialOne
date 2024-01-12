@@ -20,5 +20,5 @@ module.exports.connect = async () => {
   })
 
   // Connect to the server.
-  return mongoose.connect(process.env.DB_PATH, { useNewUrlParser: true, useCreateIndex: true })
+  return mongoose.connect(process.env.DB_PATH)
 }
